@@ -26,24 +26,13 @@ export const postShortener = async (req, res) => {
 
 export const getShortenerPage = async (req, res) => {
   try {
-    const file = await readFile(
-      path.join(__dirname, "../", "views", "index.html")
-    );
+    // const file = await readFile(
+    //   path.join(__dirname, "../", "views", "index.html")
+    // );
     const links = await loadLinks();
+    res.render("index", { links, host: req.host });
 
-    const content = file.toString().replaceAll(
-      "{{shortened_urls}}",
-      Object.entries(links)
-        .map(([shortCode, url]) => {
-          return `<li><a href="/${shortCode}" target="_blank">${
-            req.host
-          }/${shortCode}</a> - ${
-            url.length >= 30 ? `${url.slice(0, 30)}...` : url
-          }</li>`;
-        })
-        .join("")
-    );
-    return res.status(200).send(content);
+    // return res.status(200).send(content);
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
@@ -53,9 +42,7 @@ export const getShortenerPage = async (req, res) => {
 export const redirectLink = async (req, res) => {
   try {
     const { shortCode } = req.params;
-    console.log(shortCode);
     const links = await loadLinks();
-    console.log(links[shortCode]);
 
     if (!links[shortCode]) {
       return res.status(404).send("404 Error Occurred");
