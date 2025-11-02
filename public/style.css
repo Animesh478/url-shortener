@@ -90,3 +90,11 @@ li a {
 li a:hover {
   text-decoration: underline;
 }
+
+.student-reports li {
+  list-style: none;
+}
+
+.navbar-links {
+  display: flex;
+}
