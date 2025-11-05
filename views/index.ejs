@@ -22,12 +22,13 @@
       </form>
       <h2>Shortened URLs:</h2>
       <ul>
-        <% Object.entries(links).map(([shortCode, url]) => { %>
+        <% links.map((link) => { %>
         <li>
-          <a href="/<%= shortCode %>" target="_blank">
-            <%= host %>/<%= shortCode %>
+          <a href="/<%= link.finalShortCode %>" target="_blank">
+            <%= host %>/<%= link.finalShortCode %>
           </a>
-          - <%= url.length >= 30 ? `${url.slice(0, 30)}...` : url %>
+          - <%= link.url.length >= 30 ? `${link.url.slice(0, 30)}...` : link.url
+          %>
         </li>
         <% }) %>
       </ul>

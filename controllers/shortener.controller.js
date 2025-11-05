@@ -1,9 +1,9 @@
 import crypto from "crypto";
-import path from "path";
-import { readFile } from "fs/promises";
-import { loadLinks, saveLinks } from "../models/shortener.model.js";
-
-const __dirname = import.meta.dirname;
+import {
+  getLinkByShortCode,
+  loadLinks,
+  saveLinks,
+} from "../models/shortener.model.js";
 
 export const postShortener = async (req, res) => {
   const { url, shortCode } = req.body;
@@ -11,6 +11,7 @@ export const postShortener = async (req, res) => {
   const finalShortCode = shortCode || crypto.randomBytes(4).toString("hex");
 
   const links = await loadLinks();
+  console.log(links);
 
   // checking if the short code already exists in the DB
   if (links[finalShortCode]) {
@@ -19,20 +20,14 @@ export const postShortener = async (req, res) => {
       .send("Short code already exists. Please try another one");
   }
 
-  links[finalShortCode] = url; // adding the short code to the DB
-  await saveLinks(links);
+  await saveLinks({ url, finalShortCode });
   return res.redirect("/");
 };
 
 export const getShortenerPage = async (req, res) => {
   try {
-    // const file = await readFile(
-    //   path.join(__dirname, "../", "views", "index.html")
-    // );
     const links = await loadLinks();
     res.render("index", { links, host: req.host });
-
-    // return res.status(200).send(content);
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");
@@ -42,13 +37,15 @@ export const getShortenerPage = async (req, res) => {
 export const redirectLink = async (req, res) => {
   try {
     const { shortCode } = req.params;
-    const links = await loadLinks();
+    console.log(shortCode);
+    const link = await getLinkByShortCode(shortCode);
+    console.log(link);
 
-    if (!links[shortCode]) {
+    if (!link) {
       return res.status(404).send("404 Error Occurred");
     }
 
-    return res.redirect(links[shortCode]);
+    return res.redirect(link.url);
   } catch (error) {
     console.log(error);
     return res.status(500).send("Internal Server Error");

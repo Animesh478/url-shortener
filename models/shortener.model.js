@@ -1,22 +1,21 @@
-import { readFile, writeFile } from "fs/promises";
-import path from "path";
+import { env } from "../config/env.js";
+import { dbClient } from "../config/db-client.js";
 
-const __dirname = import.meta.dirname;
-
-const DATA_FILE = path.join(__dirname, "../", "data", "links.json");
+const db = dbClient.db(env.MONGODB_DATABASE_NAME);
+const shortenerCollection = db.collection("urlShortener");
 
 export const loadLinks = async function () {
   try {
-    const data = await readFile(DATA_FILE, "utf-8");
-    return JSON.parse(data);
+    return await shortenerCollection.find().toArray();
   } catch (error) {
-    if (error.code === "ENOENT") {
-      await writeFile(DATA_FILE, JSON.stringify({}));
-      return {};
-    }
+    console.log(error);
   }
 };
 
-export const saveLinks = async function (links) {
-  await writeFile(DATA_FILE, JSON.stringify(links));
+export const saveLinks = async function (link) {
+  await shortenerCollection.insertOne(link);
+};
+
+export const getLinkByShortCode = async function (shortCode) {
+  return await shortenerCollection.findOne({ finalShortCode: shortCode });
 };
