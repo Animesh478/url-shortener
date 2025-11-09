@@ -1,16 +1,12 @@
 import crypto from "crypto";
-import {
-  getLinkByShortCode,
-  loadLinks,
-  saveLinks,
-} from "../models/shortener.model.js";
+import { urls } from "../schema/url_schema.js";
 
 export const postShortener = async (req, res) => {
   const { url, shortCode } = req.body;
   // if the shortCode is not provided by the client, then we are creating a random code for the URL
   const finalShortCode = shortCode || crypto.randomBytes(4).toString("hex");
 
-  const links = await loadLinks();
+  const links = await urls.find();
   console.log(links);
 
   // checking if the short code already exists in the DB
@@ -20,13 +16,13 @@ export const postShortener = async (req, res) => {
       .send("Short code already exists. Please try another one");
   }
 
-  await saveLinks({ url, finalShortCode });
+  await urls.create({ url, shortCode: finalShortCode });
   return res.redirect("/");
 };
 
 export const getShortenerPage = async (req, res) => {
   try {
-    const links = await loadLinks();
+    const links = await urls.find();
     res.render("index", { links, host: req.host });
   } catch (error) {
     console.error(error);
@@ -38,7 +34,7 @@ export const redirectLink = async (req, res) => {
   try {
     const { shortCode } = req.params;
     console.log(shortCode);
-    const link = await getLinkByShortCode(shortCode);
+    const link = await urls.findOne({ shortCode });
     console.log(link);
 
     if (!link) {

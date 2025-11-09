@@ -15,8 +15,8 @@
           <input type="url" id="url" name="url" required />
         </div>
         <div>
-          <label for="shortCode">Enter Short Code</label>
-          <input type="text" id="shortCode" name="shortCode" required />
+          <label for="shortCode">Enter Short Code:</label>
+          <input type="text" id="shortCode" name="shortCode" />
         </div>
         <button type="submit">Shorten</button>
       </form>
@@ -24,8 +24,8 @@
       <ul>
         <% links.map((link) => { %>
         <li>
-          <a href="/<%= link.finalShortCode %>" target="_blank">
-            <%= host %>/<%= link.finalShortCode %>
+          <a href="/<%= link.shortCode %>" target="_blank">
+            <%= host %>/<%= link.shortCode %>
           </a>
           - <%= link.url.length >= 30 ? `${link.url.slice(0, 30)}...` : link.url
           %>
