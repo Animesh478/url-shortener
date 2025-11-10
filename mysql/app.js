@@ -4,7 +4,6 @@ import mysql from "mysql2/promise";
 const connection = await mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Century@dell96",
   database: "node_sql_test",
   // use this if you have already created the database
 });
