@@ -5,16 +5,25 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate"
   },
   "author": "Animesh",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.19.0",
     "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.3",
+    "mysql2": "^3.15.3",
     "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.7",
+    "prisma": "^6.19.0"
   }
 }
