@@ -28,13 +28,13 @@ export const postShortener = async (req, res) => {
 export const getShortenerPage = async (req, res) => {
   try {
     const links = await getAllShortLinks();
-    let isLoggedIn = req.headers.cookie;
-    isLoggedIn = Boolean(
-      isLoggedIn
-        ?.split(";")
-        .find((cookie) => cookie.trim().startsWith("isLoggedIn"))
-        ?.split("=")[1]
-    );
+    const isLoggedIn = req.cookies.isLoggedIn;
+    // isLoggedIn = Boolean(
+    //   isLoggedIn
+    //     ?.split(";")
+    //     .find((cookie) => cookie.trim().startsWith("isLoggedIn"))
+    //     ?.split("=")[1]
+    // );
     console.log(isLoggedIn);
 
     res.render("index", { links, host: req.host, isLoggedIn });
