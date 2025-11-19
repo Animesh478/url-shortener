@@ -1,5 +1,4 @@
 import { int, mysqlTable, timestamp, varchar } from "drizzle-orm/mysql-core";
-import { name } from "ejs";
 
 export const shortLinkModel = mysqlTable("short_links", {
   id: int().autoincrement().primaryKey(),

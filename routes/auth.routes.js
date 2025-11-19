@@ -3,7 +3,11 @@ import * as authController from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
-router.get("/register", authController.getRegisterPage);
+router
+  .route("/register")
+  .get(authController.getRegisterPage)
+  .post(authController.postRegister);
+
 router
   .route("/login")
   .get(authController.getLoginPage)
