@@ -25,7 +25,20 @@ export const postRegister = async function (req, res) {
 export const getLoginPage = function (req, res) {
   res.render("auth/login");
 };
-export const postLogin = function (req, res) {
+export const postLogin = async function (req, res) {
+  const { email, password } = req.body;
+  // check if anyone with the same email already exists or not
+  const user = await getUserByEmail(email);
+
+  // if a user with that email does not exists, then that user has to login again with the correct email
+  if (!user) {
+    return res.redirect("/login");
+  }
+
+  // if the password entered by the user doesnot match with the one in the db, then also the user has to login again with correct credentials
+  if (user.password !== password) {
+    return res.redirect("/login");
+  }
   res.cookie("isLoggedIn", true);
   res.redirect("/");
 };
