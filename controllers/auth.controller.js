@@ -1,4 +1,9 @@
-import { getUserByEmail, createUser } from "../services/auth.services.js";
+import {
+  getUserByEmail,
+  createUser,
+  hashPassword,
+  comparePassword,
+} from "../services/auth.services.js";
 
 export const getRegisterPage = function (req, res) {
   res.render("auth/register");
@@ -17,7 +22,9 @@ export const postRegister = async function (req, res) {
   }
 
   // if the user doesnot exist, then insert the user details in the db
-  const [newUser] = await createUser({ name, email, password });
+  // hash the password
+  const hashedPassword = await hashPassword(password);
+  const [newUser] = await createUser({ name, email, password: hashedPassword });
 
   res.redirect("/login");
 };
@@ -36,7 +43,8 @@ export const postLogin = async function (req, res) {
   }
 
   // if the password entered by the user doesnot match with the one in the db, then also the user has to login again with correct credentials
-  if (user.password !== password) {
+  const validPassword = await comparePassword(password, user.password);
+  if (!validPassword) {
     return res.redirect("/login");
   }
   res.cookie("isLoggedIn", true);
