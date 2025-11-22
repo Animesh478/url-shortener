@@ -7,11 +7,18 @@ import {
 } from "../services/auth.services.js";
 
 export const getRegisterPage = function (req, res) {
+  if (req.user) {
+    return res.redirect("/");
+  }
   res.render("auth/register");
 };
 
 //? get the data from the client and create a new user in the db
 export const postRegister = async function (req, res) {
+  if (req.user) {
+    return res.redirect("/");
+  }
+
   const { name, email, password } = req.body;
 
   // check if anyone with the same email already exists or not
@@ -31,9 +38,16 @@ export const postRegister = async function (req, res) {
 };
 
 export const getLoginPage = function (req, res) {
+  if (req.user) {
+    return res.redirect("/");
+  }
   res.render("auth/login");
 };
+
 export const postLogin = async function (req, res) {
+  if (req.user) {
+    return res.redirect("/");
+  }
   const { email, password } = req.body;
   // check if anyone with the same email already exists or not
   const user = await getUserByEmail(email);
@@ -57,4 +71,16 @@ export const postLogin = async function (req, res) {
 
   res.cookie("access_token", token);
   res.redirect("/");
+};
+
+export const getMe = function (req, res) {
+  if (!req.user) {
+    return res.send("Not logged in");
+  }
+  return res.send(`<h1> Welcome, ${req.user.name}`);
+};
+
+export const logoutUser = function (req, res) {
+  res.clearCookie("access_token");
+  res.redirect("/login");
 };

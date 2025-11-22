@@ -8,9 +8,11 @@ import {
 
 const router = express.Router();
 
-router.get("/", getShortenerPage);
+router.route("/").get(getShortenerPage).post(postShortener);
 
-router.post("/", postShortener);
+// router.get("/", getShortenerPage);
+
+// router.post("/", postShortener);
 
 router.get("/:shortCode", redirectLink);
 

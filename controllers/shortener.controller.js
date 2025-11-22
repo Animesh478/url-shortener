@@ -28,16 +28,8 @@ export const postShortener = async (req, res) => {
 export const getShortenerPage = async (req, res) => {
   try {
     const links = await getAllShortLinks();
-    const isLoggedIn = req.cookies.isLoggedIn;
-    // isLoggedIn = Boolean(
-    //   isLoggedIn
-    //     ?.split(";")
-    //     .find((cookie) => cookie.trim().startsWith("isLoggedIn"))
-    //     ?.split("=")[1]
-    // );
-    console.log(isLoggedIn);
 
-    res.render("index", { links, host: req.host, isLoggedIn });
+    res.render("index", { links, host: req.host });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Internal server error");

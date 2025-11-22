@@ -11,6 +11,10 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(verifyAuthentication);
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  return next();
+});
 
 app.set("view engine", "ejs");
 

@@ -33,7 +33,7 @@ export const generateToken = function ({ name, email, id }) {
   });
 };
 
-// verifying the token received and returning the decoded payload
+//* verifying the token received and returning the decoded payload
 export const verifyJWTToken = function (token) {
   return jwt.verify(token, process.env.JWT_KEY);
 };
