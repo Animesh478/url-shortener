@@ -3,6 +3,7 @@ import {
   createUser,
   hashPassword,
   comparePassword,
+  generateToken,
 } from "../services/auth.services.js";
 
 export const getRegisterPage = function (req, res) {
@@ -47,6 +48,13 @@ export const postLogin = async function (req, res) {
   if (!validPassword) {
     return res.redirect("/login");
   }
-  res.cookie("isLoggedIn", true);
+
+  const token = generateToken({
+    id: user.id,
+    email: user.email,
+    name: user.name,
+  });
+
+  res.cookie("access_token", token);
   res.redirect("/");
 };
