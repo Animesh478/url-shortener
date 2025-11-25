@@ -50,6 +50,9 @@
                   placeholder="Enter Your Password"
                 />
               </div>
+              <%if(error && error.length>0){%> <%error.forEach((error)=>{%>
+              <p class="flash-error"><%= error %></p>
+              <% })%> <%}%>
               <div class="form-group">
                 <input
                   type="checkbox"
