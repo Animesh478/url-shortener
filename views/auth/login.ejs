@@ -50,10 +50,10 @@
                   placeholder="Enter Your Password"
                 />
               </div>
-              <%if(error && error.length>0){%> <%error.forEach((error)=>{%>
+              <%if(errors && errors.length>0){%> <%errors.forEach((error)=>{%>
               <p class="flash-error"><%= error %></p>
               <% })%> <%}%>
-              <div class="form-group">
+              <div class="form-group form-button">
                 <input
                   type="checkbox"
                   name="remember-me"
@@ -74,23 +74,22 @@
                 />
               </div>
             </form>
+
+            <div class="forgot-password-link">
+              <a href="/reset-password">Forgot password?</a>
+            </div>
+
             <div class="social-login">
               <span class="social-label">Or login with</span>
               <ul class="socials">
                 <li>
-                  <a href="#"
-                    ><i class="display-flex-center zmdi zmdi-facebook"></i
-                  ></a>
+                  <a href="#"><i class="zmdi zmdi-facebook"></i></a>
                 </li>
                 <li>
-                  <a href="#"
-                    ><i class="display-flex-center zmdi zmdi-twitter"></i
-                  ></a>
+                  <a href="#"><i class="zmdi zmdi-github"></i></a>
                 </li>
                 <li>
-                  <a href="#"
-                    ><i class="display-flex-center zmdi zmdi-google"></i
-                  ></a>
+                  <a href="#"><i class="zmdi zmdi-google"></i></a>
                 </li>
               </ul>
             </div>

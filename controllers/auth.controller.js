@@ -5,6 +5,10 @@ import {
   comparePassword,
   generateToken,
 } from "../services/auth.services.js";
+import {
+  loginUserSchema,
+  registerUserSchema,
+} from "../validators/auth-validator.js";
 
 export const getRegisterPage = function (req, res) {
   if (req.user) {
@@ -19,14 +23,21 @@ export const postRegister = async function (req, res) {
     return res.redirect("/");
   }
 
-  const { name, email, password } = req.body;
+  const result = registerUserSchema.safeParse(req.body);
+
+  if (!result.success) {
+    const errors = result.error.issues.map((error) => error.message);
+    req.flash("errors", errors);
+    return res.redirect("/register");
+  }
+  const { name, email, password } = result.data;
 
   // check if anyone with the same email already exists or not
   const existingUser = await getUserByEmail(email);
 
   // if a user with that email exists, then that user has to register again with another email
   if (existingUser) {
-    req.flash("error", "User already exists");
+    req.flash("errors", "User already exists");
     return res.redirect("/register");
   }
 
@@ -49,20 +60,28 @@ export const postLogin = async function (req, res) {
   if (req.user) {
     return res.redirect("/");
   }
-  const { email, password } = req.body;
+
+  const result = loginUserSchema.safeParse(req.body);
+  if (!result.success) {
+    const errors = result.error.issues.map((error) => error.message);
+    req.flash("errors", errors);
+    return res.redirect("/login");
+  }
+  const { email, password } = result.data;
+
   // check if anyone with the same email already exists or not
   const user = await getUserByEmail(email);
 
   // if a user with that email does not exists, then that user has to login again with the correct email
   if (!user) {
-    req.flash("error", "Invalid email or password");
+    req.flash("errors", "Invalid email or password");
     return res.redirect("/login");
   }
 
   // if the password entered by the user doesnot match with the one in the db, then also the user has to login again with correct credentials
   const validPassword = await comparePassword(password, user.password);
   if (!validPassword) {
-    req.flash("error", "Invalid email or password");
+    req.flash("errors", "Invalid email or password");
     return res.redirect("/login");
   }
 

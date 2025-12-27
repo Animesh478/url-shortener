@@ -25,7 +25,7 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.3",
     "mysql2": "^3.15.3",
-    "zod": "^4.1.12"
+    "zod": "^4.2.1"
   },
   "devDependencies": {
     "drizzle-kit": "^0.31.7",

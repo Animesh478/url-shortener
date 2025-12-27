@@ -15,6 +15,13 @@
       "when": 1763486211368,
       "tag": "0001_hard_true_believers",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1766058297319,
+      "tag": "0002_romantic_falcon",
+      "breakpoints": true
     }
   ]
 }

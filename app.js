@@ -26,6 +26,10 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   return next();
 });
+app.use((req, res, next) => {
+  res.locals.errors = req.flash("errors");
+  return next();
+});
 
 app.set("view engine", "ejs");
 

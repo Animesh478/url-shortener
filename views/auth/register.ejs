@@ -61,7 +61,7 @@
                   />
                 </div>
 
-                <%if(error && error.length>0){%> <%error.forEach((error)=>{%>
+                <%if(errors && errors.length>0){%> <%errors.forEach((error)=>{%>
                 <p class="flash-error"><%= error %></p>
                 <% })%> <%}%>
 
